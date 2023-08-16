@@ -1,2 +1,3 @@
 # react-canvas
-Created with CodeSandbox
+
+Project to show how canvas are used with hooks in react.
