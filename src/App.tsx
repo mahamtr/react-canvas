@@ -1,5 +1,45 @@
 import React from "react";
 import "./styles.css";
+const d3 = require("d3-delaunay");
+const height = 600;
+const width = 400;
+const n = 200;
+
+const drawVoronoi = (context: any) => {
+  const particles = Array.from({ length: n }, () => [
+    Math.random() * width,
+    Math.random() * height,
+  ]);
+
+  function update() {
+    const delaunay = d3.Delaunay.from(particles);
+    const voronoi = delaunay.voronoi([0.5, 0.5, width - 0.5, height - 0.5]);
+    context.clearRect(0, 0, width, height);
+
+    context.beginPath();
+    delaunay.render(context);
+    context.strokeStyle = "#ccc";
+    context.stroke();
+
+    context.beginPath();
+    voronoi.render(context);
+    voronoi.renderBounds(context);
+    context.strokeStyle = "#000";
+    context.stroke();
+
+    context.beginPath();
+    delaunay.renderPoints(context);
+    context.fill();
+  }
+
+  context.canvas.ontouchmove = context.canvas.onmousemove = (event: any) => {
+    event.preventDefault();
+    particles[0] = [event.layerX, event.layerY];
+    update();
+  };
+
+  update();
+};
 
 export default function App() {
   const canvasRef = React.useRef(null);
@@ -28,7 +68,8 @@ export default function App() {
         const canvas = canvasRef.current as unknown as HTMLCanvasElement;
         if (canvas == null) return;
         const ctx = canvas?.getContext("2d");
-        draw(ctx, { x: e.clientX, y: e.clientY });
+        drawVoronoi(ctx);
+        //draw(ctx, { x: e.clientX, y: e.clientY }
       }}
     />
   );
