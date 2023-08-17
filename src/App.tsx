@@ -22,8 +22,8 @@ const drawVoronoi = (context: any) => {
     context.globalAlpha = 1;
     context.filter = "brightness(100%)";
     const grd = context.createLinearGradient(0, 0, 0, height);
-    grd.addColorStop(0.1, "#c22ed0");
-    grd.addColorStop(0.9, "#5ffae0");
+    grd.addColorStop(0, "#DF3FD7");
+    grd.addColorStop(1, "#3FDF84");
     context.fillStyle = grd;
     context.fillRect(0, 0, width, height);
     context.globalCompositeOperation = "source-over";
@@ -34,6 +34,7 @@ const drawVoronoi = (context: any) => {
     voronoi.render(context);
     voronoi.renderBounds(context);
     context.strokeStyle = "#FFFFFF";
+    context.lineWidth = 0.5;
     context.stroke();
 
     context.beginPath();
